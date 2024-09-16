@@ -2,7 +2,11 @@ import { Solution } from "@app/main"
 import { Area } from "@classes/Area"
 
 describe("Solution", () => {
-    const instance = new Solution("19")
+    let instance: Solution
+    beforeEach(() => {
+        
+        instance = new Solution("19")
+    })
 
     it("should create instance", () => {
         expect(instance).toBeTruthy()
