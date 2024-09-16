@@ -5,23 +5,20 @@ export function limitScope(min: number, max: number) {
     if(min > max) throw new limitScopeError("Min param cannot be greater than max param!")
     
     return function<T extends Record<string, any>>(target: T, key: keyof T) {
-        let initialValue = target[key] as unknown
-
-        if(initialValue === undefined) return
-        assertValueIfNotIsNumber(initialValue, "Initial")
-        checkNumberIsBeetwen(initialValue, min, max)
-        let value = initialValue
+        let initialValue = target[key] ?? min
         
-        const getter = () => value
+        const getter = () => initialValue
         const setter = (newVal: unknown) => {
             assertValueIfNotIsNumber(newVal, "Setter")
             checkNumberIsBeetwen(newVal, min, max)
-            value = newVal
+            initialValue = newVal
         }
 
         Object.defineProperty(target, key, {
             get: getter,
             set: setter,
+            enumerable: true,
+            configurable: true
         })
     }
 }
